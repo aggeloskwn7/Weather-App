@@ -1,15 +1,73 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+
+// Helper function to handle API errors
+function handleApiError(error: any, defaultMessage: string) {
+  console.error(`Error: ${defaultMessage}`, error);
+  
+  // Check if it's an API error response
+  if (axios.isAxiosError(error)) {
+    const axiosError = error as AxiosError<any>;
+    
+    // API key errors (commonly 401)
+    if (axiosError.response?.status === 401) {
+      return {
+        status: 401,
+        message: "OpenWeatherMap API key is invalid or unauthorized. Please check your API key configuration.",
+        details: axiosError.response?.data?.message || "Authentication failed",
+      };
+    }
+    
+    // Rate limiting (commonly 429)
+    if (axiosError.response?.status === 429) {
+      return {
+        status: 429, 
+        message: "Too many requests to the weather service. Please try again later.",
+        details: axiosError.response?.data?.message || "Rate limit exceeded",
+      };
+    }
+    
+    // Other API errors with response
+    if (axiosError.response?.data) {
+      return {
+        status: axiosError.response.status || 500,
+        message: defaultMessage,
+        details: axiosError.response.data.message || JSON.stringify(axiosError.response.data),
+      };
+    }
+    
+    // Network errors
+    if (axiosError.code === 'ECONNREFUSED' || axiosError.code === 'ENOTFOUND') {
+      return {
+        status: 503,
+        message: "Could not connect to the weather service. Please check your internet connection.",
+        details: axiosError.message,
+      };
+    }
+  }
+  
+  // Default error response
+  return {
+    status: 500,
+    message: defaultMessage,
+    details: error.message || "Unknown error occurred",
+  };
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // OpenWeatherMap API key from environment
-  const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY || "c612516be5e1052c8c30fccc1c3ff0e7";
+  const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
   
   // Base URL for OpenWeatherMap API
   const OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5";
   const OPENWEATHER_GEO_URL = "https://api.openweathermap.org/geo/1.0";
+  
+  // Check if API key is configured
+  if (!OPENWEATHER_API_KEY) {
+    console.warn("Warning: OPENWEATHER_API_KEY environment variable is not set");
+  }
   
   // Geocoding API to search for locations
   app.get("/api/weather/locations", async (req, res) => {
@@ -26,8 +84,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json(response.data);
     } catch (error) {
-      console.error("Error fetching locations:", error);
-      res.status(500).json({ message: "Failed to fetch locations" });
+      const errorResponse = handleApiError(error, "Failed to fetch locations");
+      res.status(errorResponse.status).json(errorResponse);
     }
   });
   
@@ -46,8 +104,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json(response.data);
     } catch (error) {
-      console.error("Error reverse geocoding:", error);
-      res.status(500).json({ message: "Failed to reverse geocode" });
+      const errorResponse = handleApiError(error, "Failed to reverse geocode location");
+      res.status(errorResponse.status).json(errorResponse);
     }
   });
   
@@ -67,8 +125,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json(response.data);
     } catch (error) {
-      console.error("Error fetching weather data:", error);
-      res.status(500).json({ message: "Failed to fetch weather data" });
+      const errorResponse = handleApiError(error, "Failed to fetch weather data");
+      res.status(errorResponse.status).json(errorResponse);
     }
   });
   

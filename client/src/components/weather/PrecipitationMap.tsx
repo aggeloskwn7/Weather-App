@@ -42,7 +42,7 @@ export default function PrecipitationMap({ latitude, longitude, isLoading }: Map
   const getMapUrl = () => {
     const mapBase = "https://tile.openweathermap.org/map";
     const zoom = 10;
-    const apiKey = process.env.OPENWEATHER_API_KEY || "YOUR_API_KEY";
+    const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
     
     let layer = "";
     switch (mapView) {

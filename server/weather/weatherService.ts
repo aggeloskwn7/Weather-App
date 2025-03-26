@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // OpenWeatherMap API key from environment
-const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY || "c612516be5e1052c8c30fccc1c3ff0e7";
+const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 
 // Base URL for OpenWeatherMap API
 const OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5";

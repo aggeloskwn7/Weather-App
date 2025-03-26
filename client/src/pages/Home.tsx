@@ -76,9 +76,11 @@ export default function Home() {
   
   // Show error state if there's an error
   if (isWeatherError) {
+    const errorMessage = (weatherError as Error)?.message || "Failed to fetch weather data";
+    console.error("Weather error:", weatherError);
     return (
       <ErrorDisplay 
-        message={(weatherError as Error)?.message || "Failed to fetch weather data"} 
+        message={errorMessage} 
         onRetry={refetchWeather} 
       />
     );
