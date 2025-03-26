@@ -148,12 +148,12 @@ export default function Home() {
   }
   
   return (
-    <div className="min-h-screen font-sans flex flex-col bg-gray-100 text-gray-800">
+    <div className="min-h-screen font-sans flex flex-col bg-background text-foreground">
       {/* App Header */}
-      <header className="sticky top-0 z-10 bg-white shadow-sm">
+      <header className="sticky top-0 z-10 bg-card shadow-sm">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold text-gray-800">
+            <h1 className="text-xl font-semibold text-foreground">
               <i className="fas fa-cloud-sun mr-2"></i>Weather App
             </h1>
             
@@ -173,10 +173,10 @@ export default function Home() {
               
               {/* Settings Button */}
               <button 
-                className="p-2 rounded-full hover:bg-gray-200 transition duration-200"
+                className="p-2 rounded-full hover:bg-secondary transition duration-200"
                 onClick={toggleSettingsPanel}
               >
-                <i className="fas fa-cog text-gray-600"></i>
+                <i className="fas fa-cog text-muted-foreground"></i>
               </button>
             </div>
           </div>
@@ -232,14 +232,14 @@ export default function Home() {
         
         {!weatherData && !isWeatherLoading && (
           <div className="container mx-auto px-4 py-16 text-center">
-            <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
-              <i className="fas fa-search text-5xl text-gray-400 mb-4"></i>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">No Location Selected</h2>
-              <p className="text-gray-600 mb-6">
+            <div className="max-w-md mx-auto bg-card text-card-foreground rounded-lg shadow-md p-8">
+              <i className="fas fa-search text-5xl text-muted-foreground mb-4"></i>
+              <h2 className="text-2xl font-semibold mb-2">No Location Selected</h2>
+              <p className="text-muted-foreground mb-6">
                 Search for a location or allow access to your current location to see weather information.
               </p>
               <button 
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md transition duration-200"
                 onClick={() => {
                   if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(

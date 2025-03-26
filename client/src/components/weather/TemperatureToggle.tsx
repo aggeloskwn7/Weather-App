@@ -14,13 +14,13 @@ export default function TemperatureToggle() {
   
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm font-medium text-gray-600">°F</span>
+      <span className="text-sm font-medium text-muted-foreground">°F</span>
       <Switch 
         checked={settings.temperatureUnit === 'metric'}
         onCheckedChange={handleToggle}
-        className="data-[state=checked]:bg-blue-500" 
+        className="data-[state=checked]:bg-primary" 
       />
-      <span className="text-sm font-medium text-gray-600">°C</span>
+      <span className="text-sm font-medium text-muted-foreground">°C</span>
     </div>
   );
 }
