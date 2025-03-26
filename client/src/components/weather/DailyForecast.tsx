@@ -51,7 +51,7 @@ export default function DailyForecast({ data, isLoading }: DailyForecastProps) {
   return (
     <section className="bg-white py-6 px-4 shadow-sm mb-4">
       <div className="container mx-auto">
-        <h3 className="text-lg font-medium text-gray-800 mb-4">10-Day Forecast</h3>
+        <h3 className="text-lg font-medium text-gray-800 mb-4">5-Day Forecast</h3>
         
         <div className="space-y-4">
           {data.map((day, index) => {
