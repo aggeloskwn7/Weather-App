@@ -10,6 +10,7 @@ import SettingsPanel from "@/components/weather/SettingsPanel";
 import LoadingOverlay from "@/components/weather/LoadingOverlay";
 import ErrorDisplay from "@/components/weather/ErrorDisplay";
 import PrecipitationMap from "@/components/weather/PrecipitationMap";
+import TemperatureToggle from "@/components/weather/TemperatureToggle";
 
 // Define types for the weather data
 interface WeatherData {
@@ -156,16 +157,28 @@ export default function Home() {
               <i className="fas fa-cloud-sun mr-2"></i>Weather App
             </h1>
             
+            {/* Temperature Toggle */}
+            <div className="hidden md:block">
+              <TemperatureToggle />
+            </div>
+            
             {/* Location Search */}
             <SearchBar />
             
-            {/* Settings Button */}
-            <button 
-              className="p-2 rounded-full hover:bg-gray-200 transition duration-200"
-              onClick={toggleSettingsPanel}
-            >
-              <i className="fas fa-cog text-gray-600"></i>
-            </button>
+            <div className="flex items-center space-x-4">
+              {/* Temperature Toggle (Mobile) */}
+              <div className="md:hidden">
+                <TemperatureToggle />
+              </div>
+              
+              {/* Settings Button */}
+              <button 
+                className="p-2 rounded-full hover:bg-gray-200 transition duration-200"
+                onClick={toggleSettingsPanel}
+              >
+                <i className="fas fa-cog text-gray-600"></i>
+              </button>
+            </div>
           </div>
         </div>
       </header>
