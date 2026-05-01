@@ -4,7 +4,7 @@ Just a nice website made by me with react and tailwind for the frontend and node
 
 If you wanna see it for yourself download or pull the repo and do npm install and just do npm run dev to check it out on localhost 
 
-https://i.imgur.com/18qyZEw.png
+![Weather app screenshot](https://i.imgur.com/18qyZEw.png)
 
 Features: 
 
